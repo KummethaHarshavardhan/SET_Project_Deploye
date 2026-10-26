@@ -23,5 +23,8 @@
     "nodemailer": "^9.0.3",
     "nodemon": "^3.1.14",
     "socket.io": "^4.7.2"
+  },
+  "engines": {
+    "node": ">=20.0.0"
   }
 }

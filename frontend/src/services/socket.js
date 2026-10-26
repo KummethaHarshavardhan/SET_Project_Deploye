@@ -1,13 +1,13 @@
 import { io } from 'socket.io-client';
 import { getToken } from './authService';
+import { SOCKET_URL } from './apiConfig';
 
 let socket = null;
 
 export const connectSocket = () => {
   if (!socket) {
-    const url = import.meta.env.VITE_API_URL || 'http://localhost:5000';
     const token = getToken();
-    socket = io(url, { transports: ['websocket', 'polling'], auth: { token } });
+    socket = io(SOCKET_URL, { transports: ['websocket', 'polling'], auth: { token } });
   }
   return socket;
 };

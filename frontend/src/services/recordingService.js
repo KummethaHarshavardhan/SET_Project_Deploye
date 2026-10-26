@@ -1,4 +1,5 @@
-import api, { getBaseURL } from "./api";
+import { API_BASE_URL } from "./apiConfig";
+import api from "./api";
 
 export const getRecordings = async () => {
   const response = await api.get("/recordings");
@@ -20,7 +21,7 @@ export const deleteRecording = async (id) => {
 };
 
 export const getAudioStreamUrl = (id) => {
-  const baseURL = getBaseURL();
+  const baseURL = API_BASE_URL;
   const token = localStorage.getItem("token");
   return `${baseURL}/recordings/${id}${token ? `?token=${encodeURIComponent(token)}` : ""}`;
 };
