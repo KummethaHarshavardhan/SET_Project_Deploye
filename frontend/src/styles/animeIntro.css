@@ -1,0 +1,259 @@
+/* ================= Full-Screen Cinematic Video Intro ================= */
+.video-intro-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 20000;
+  background: #040714;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.video-intro-overlay.fading-out {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.video-intro-element {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+}
+
+.video-intro-vignette {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(
+    circle at center,
+    transparent 55%,
+    rgba(4, 7, 20, 0.55) 100%
+  );
+}
+
+.video-intro-play-btn {
+  position: absolute;
+  z-index: 20011;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 28px;
+  border-radius: 999px;
+  border: 1px solid rgba(129, 140, 248, 0.6);
+  background: linear-gradient(135deg, #2563eb 0%, #7c3aed 100%);
+  color: #ffffff;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 12px 32px rgba(37, 99, 235, 0.5);
+}
+
+/* ================= Cinematic 3D Anime Intro ================= */
+.anime-intro-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 20000;
+  background: #040714;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.anime-intro-overlay.fading-out {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.anime-intro-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* Loading Screen */
+.anime-intro-loader {
+  position: absolute;
+  inset: 0;
+  z-index: 20005;
+  background: radial-gradient(circle at center, #0d1638 0%, #040714 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  color: #e2e8f0;
+  font-size: 14px;
+  letter-spacing: 1px;
+}
+
+.anime-intro-spinner {
+  width: 44px;
+  height: 44px;
+  border: 3px solid rgba(99, 102, 241, 0.25);
+  border-top-color: #60a5fa;
+  border-radius: 50%;
+  animation: spin 0.85s linear infinite;
+}
+
+/* Skip Intro Button */
+.anime-skip-btn {
+  position: absolute;
+  top: 22px;
+  right: 24px;
+  z-index: 20010;
+  background: rgba(15, 23, 42, 0.65);
+  backdrop-filter: blur(10px);
+  color: #e2e8f0;
+  border: 1px solid rgba(96, 165, 250, 0.4);
+  padding: 9px 18px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.4px;
+  cursor: pointer;
+  transition: background 0.25s, border-color 0.25s, transform 0.2s;
+}
+
+.anime-skip-btn:hover {
+  background: rgba(37, 99, 235, 0.55);
+  border-color: #93c5fd;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(37, 99, 235, 0.35);
+}
+
+/* Motion Blur Speed Lines (Scene 5) */
+.anime-speed-lines {
+  position: absolute;
+  inset: 0;
+  z-index: 20002;
+  pointer-events: none;
+  opacity: 0;
+  background: repeating-conic-gradient(
+    from 0deg at 50% 50%,
+    rgba(147, 197, 253, 0.16) 0deg 2deg,
+    transparent 2deg 11deg
+  );
+  mask-image: radial-gradient(circle, transparent 22%, black 75%);
+  -webkit-mask-image: radial-gradient(circle, transparent 22%, black 75%);
+  transition: opacity 0.2s ease;
+}
+
+.anime-speed-lines.active {
+  opacity: 1;
+}
+
+/* Camera Lens Impact Crack Overlay (Scene 5) */
+.anime-glass-crack {
+  position: absolute;
+  inset: 0;
+  z-index: 20003;
+  pointer-events: none;
+  opacity: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.anime-glass-crack svg {
+  width: 100%;
+  height: 100%;
+  filter: drop-shadow(0 0 12px rgba(147, 197, 253, 0.85));
+}
+
+.anime-impact-flash {
+  position: absolute;
+  inset: 0;
+  z-index: 20004;
+  background: radial-gradient(circle, rgba(191, 219, 254, 0.9) 0%, rgba(59, 130, 246, 0.4) 55%, transparent 100%);
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Scene 6: 3D Metallic Project Title Reveal */
+.anime-title-reveal {
+  position: absolute;
+  inset: 0;
+  z-index: 20006;
+  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 20px;
+  opacity: 0;
+  transform: scale(0.86);
+}
+
+.anime-title-sweep {
+  position: absolute;
+  width: 140%;
+  height: 180px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(96, 165, 250, 0.18) 35%,
+    rgba(167, 139, 250, 0.38) 50%,
+    rgba(96, 165, 250, 0.18) 65%,
+    transparent 100%
+  );
+  transform: rotate(-12deg) translateX(-100%);
+  filter: blur(18px);
+}
+
+.anime-title-main {
+  font-size: clamp(32px, 5.5vw, 66px);
+  font-weight: 800;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  background: linear-gradient(
+    180deg,
+    #ffffff 0%,
+    #dbeafe 28%,
+    #60a5fa 58%,
+    #818cf8 78%,
+    #a855f7 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  filter: drop-shadow(0 0 28px rgba(59, 130, 246, 0.78))
+    drop-shadow(0 6px 20px rgba(124, 58, 237, 0.58));
+  margin-bottom: 14px;
+}
+
+.anime-title-sub {
+  font-size: clamp(14px, 2vw, 21px);
+  font-weight: 500;
+  letter-spacing: 3px;
+  color: #c7d2fe;
+  text-transform: uppercase;
+  text-shadow: 0 0 18px rgba(99, 102, 241, 0.75);
+}
+
+/* Scene 7: Blue Light Transition Veil */
+.anime-blue-transition {
+  position: absolute;
+  inset: 0;
+  z-index: 20008;
+  background: radial-gradient(circle at center, rgba(96, 165, 250, 0.95) 0%, #1e3a8a 45%, #060b19 100%);
+  opacity: 0;
+  pointer-events: none;
+}
+
+@media (max-width: 600px) {
+  .anime-skip-btn {
+    top: 14px;
+    right: 14px;
+    padding: 7px 14px;
+    font-size: 12px;
+  }
+}

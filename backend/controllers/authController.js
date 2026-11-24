@@ -1,7 +1,7 @@
-const asyncHandler = require('../utils/asyncHandler');
-const generateToken = require('../utils/generateToken');
-const sendEmail = require('../utils/sendEmail');
-const Users = require('../models/users');
+import asyncHandler from '../utils/asyncHandler.js';
+import generateToken from '../utils/generateToken.js';
+import sendEmail from '../utils/sendEmail.js';
+import Users from '../models/users.js';
 
 // @route POST /api/auth/register
 const registerUser = asyncHandler(async (req, res) => {
@@ -156,7 +156,7 @@ const resetPassword = asyncHandler(async (req, res) => {
   res.status(200).json({ message: 'Password reset successfully' });
 });
 
-module.exports = {
+export {
   registerUser,
   loginUser,
   getProfile,

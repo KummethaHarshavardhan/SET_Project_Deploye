@@ -1,7 +1,7 @@
-const path = require('path');
-const fs = require('fs');
-const asyncHandler = require('../utils/asyncHandler');
-const Recording = require('../models/Recording');
+import path from 'path';
+import fs from 'fs';
+import asyncHandler from '../utils/asyncHandler.js';
+import Recording from '../models/Recording.js';
 
 // @route POST /api/recordings
 // @desc  Upload and save audio recording
@@ -116,7 +116,7 @@ const deleteRecording = asyncHandler(async (req, res) => {
   res.status(200).json({ message: 'Recording deleted successfully' });
 });
 
-module.exports = {
+export {
   createRecording,
   getRecordings,
   getRecordingById,

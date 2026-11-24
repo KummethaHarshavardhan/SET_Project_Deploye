@@ -1,19 +1,25 @@
-const path = require('path');
-const express = require('express');
-const cors = require('cors');
-const dotenv = require('dotenv');
+import path from 'path';
+import http from 'http';
+import { fileURLToPath } from 'url';
+import express from 'express';
+import cors from 'cors';
+import dotenv from 'dotenv';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 dotenv.config();
 dotenv.config({ path: path.join(__dirname, '.env') });
 
-require('./config/db');
+import './config/db.js';
 
-const authRoutes = require('./routes/authRoutes');
-const expenseRoutes = require('./routes/expenseRoutes');
-const incomeRoutes = require('./routes/incomeRoutes');
-const recordingRoutes = require('./routes/recordingRoutes');
-
-const { notFound, errorHandler } = require('./middleware/errorMiddleware');
+import authRoutes from './routes/authRoutes.js';
+import expenseRoutes from './routes/expenseRoutes.js';
+import incomeRoutes from './routes/incomeRoutes.js';
+import recordingRoutes from './routes/recordingRoutes.js';
+import voiceRoutes from './AI/routes/voiceRoutes.js';
+import { notFound, errorHandler } from './middleware/errorMiddleware.js';
+import socketUtil from './utils/socket.js';
 
 const app = express();
 
@@ -28,16 +34,16 @@ app.use('/api/auth', authRoutes);
 app.use('/api/expenses', expenseRoutes);
 app.use('/api/income', incomeRoutes);
 app.use('/api/recordings', recordingRoutes);
-
+app.use('/api/voice', voiceRoutes);
 
 app.use(notFound);
 app.use(errorHandler);
 
-const PORT = process.env.PORT || 5000;
-const http = require('http');
+const PORT = process.env.PORT || 8678;
 const server = http.createServer(app);
 
-const socketUtil = require('./utils/socket');
 socketUtil.init(server);
 
-server.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+server.listen(PORT, '0.0.0.0', () => {
+  console.log(`Server running on port ${PORT}`);
+});

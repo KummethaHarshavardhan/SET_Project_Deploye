@@ -1,32 +1,47 @@
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import {
   FaEnvelope,
   FaLock,
   FaEye,
   FaEyeSlash,
-  FaChartPie,
-  FaShieldAlt,
-  FaBolt,
   FaWallet,
+  FaPlay,
 } from "react-icons/fa";
 import { loginUser } from "../services/authService";
 import { useToast } from "../context/ToastContext";
-import AuthVideoBackground from "../components/AuthVideoBackground";
+import AnimeMountainBackground from "../components/AnimeMountainBackground";
+import VideoIntro from "../components/VideoIntro";
 import "../styles/login.css";
 
 function Login() {
   const navigate = useNavigate();
   const toast = useToast();
 
-  const [formData, setFormData] = useState({
-    email: "",
-    password: "",
+  const [showIntro, setShowIntro] = useState(() => {
+    return !sessionStorage.getItem("set_video_intro_seen");
   });
 
+  const [formData, setFormData] = useState(() => ({
+    email: localStorage.getItem("set_remembered_email") || "",
+    password: "",
+  }));
+
+  const [rememberMe, setRememberMe] = useState(
+    () => Boolean(localStorage.getItem("set_remembered_email"))
+  );
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+
+  const handleIntroComplete = useCallback(() => {
+    setShowIntro(false);
+  }, []);
+
+  const handleReplayIntro = () => {
+    sessionStorage.removeItem("set_video_intro_seen");
+    setShowIntro(true);
+  };
 
   const handleChange = (e) => {
     setFormData({
@@ -43,6 +58,11 @@ function Login() {
     try {
       setLoading(true);
       await loginUser(formData);
+      if (rememberMe) {
+        localStorage.setItem("set_remembered_email", formData.email);
+      } else {
+        localStorage.removeItem("set_remembered_email");
+      }
       toast.success("Welcome back! Logged in successfully.");
       navigate("/dashboard");
     } catch (err) {
@@ -60,144 +80,103 @@ function Login() {
 
   return (
     <div className="auth-page">
-      <AuthVideoBackground />
+      {showIntro && <VideoIntro onComplete={handleIntroComplete} />}
 
-      <div className="auth-shell">
-        {/* Brand / Showcase panel */}
-        <div className="auth-showcase">
-          <div className="showcase-blob showcase-blob-1" />
-          <div className="showcase-blob showcase-blob-2" />
+      <AnimeMountainBackground />
 
-          <div className="showcase-content">
-            <div className="showcase-logo">
-              <span className="showcase-logo-icon">
-                <FaWallet />
+      <div className="auth-glass-card">
+        <div className="auth-brand-header">
+          <span className="auth-brand-icon">
+            <FaWallet />
+          </span>
+          <span className="auth-brand-name">Smart Expense Tracker</span>
+        </div>
+
+        <h2>Welcome Back</h2>
+        <p className="auth-subtitle">
+          Sign in to continue tracking your finances with AI.
+        </p>
+
+        {error && <p className="error-text">{error}</p>}
+
+        <form onSubmit={handleSubmit}>
+          <div className="input-group">
+            <label>Email Address</label>
+            <div className="input-box">
+              <FaEnvelope className="input-icon" />
+              <input
+                type="email"
+                name="email"
+                placeholder="Enter your email"
+                value={formData.email}
+                onChange={handleChange}
+                autoComplete="email"
+                required
+              />
+            </div>
+          </div>
+
+          <div className="input-group">
+            <label>Password</label>
+            <div className="input-box">
+              <FaLock className="input-icon" />
+              <input
+                type={showPassword ? "text" : "password"}
+                name="password"
+                placeholder="Enter your password"
+                value={formData.password}
+                onChange={handleChange}
+                autoComplete="current-password"
+                required
+              />
+              <span
+                className="password-toggle"
+                onClick={() => setShowPassword(!showPassword)}
+              >
+                {showPassword ? <FaEyeSlash /> : <FaEye />}
               </span>
-              Smart Expense Tracker
             </div>
-
-            <h1>
-              Take control of <span>every rupee</span> you spend.
-            </h1>
-
-            <p>
-              Track expenses, monitor income and uncover spending insights —
-              all in one place, built to keep your money organized.
-            </p>
-
-            <ul className="showcase-features">
-              <li>
-                <span className="showcase-feature-icon">
-                  <FaChartPie />
-                </span>
-                <div>
-                  <strong>Smart Insights</strong>
-                  <span>Visual reports that reveal where your money goes</span>
-                </div>
-              </li>
-
-              <li>
-                <span className="showcase-feature-icon">
-                  <FaBolt />
-                </span>
-                <div>
-                  <strong>Real-time Sync</strong>
-                  <span>Your data updates instantly, on every device</span>
-                </div>
-              </li>
-
-              <li>
-                <span className="showcase-feature-icon">
-                  <FaShieldAlt />
-                </span>
-                <div>
-                  <strong>Private &amp; Secure</strong>
-                  <span>Your financial data stays yours, always</span>
-                </div>
-              </li>
-            </ul>
           </div>
-        </div>
 
-        {/* Form panel */}
-        <div className="auth-form-panel">
-          <div className="auth-card">
-            <div className="auth-mobile-logo">
-              <FaWallet /> Smart Expense Tracker
-            </div>
+          <div className="auth-options-row">
+            <label className="remember-label">
+              <input
+                type="checkbox"
+                checked={rememberMe}
+                onChange={(e) => setRememberMe(e.target.checked)}
+              />
+              <span>Remember Me</span>
+            </label>
 
-            <h2>Welcome back</h2>
-            <p className="auth-subtitle">
-              Login to continue managing your expenses.
-            </p>
-
-            {error && <p className="error-text">{error}</p>}
-
-            <form onSubmit={handleSubmit}>
-              <div className="input-group">
-                <label>Email Address</label>
-
-                <div className="input-box">
-                  <FaEnvelope className="input-icon" />
-
-                  <input
-                    type="email"
-                    name="email"
-                    placeholder="Enter your email"
-                    value={formData.email}
-                    onChange={handleChange}
-                    autoComplete="email"
-                    required
-                  />
-                </div>
-              </div>
-
-              <div className="input-group">
-                <label>Password</label>
-
-                <div className="input-box">
-                  <FaLock className="input-icon" />
-
-                  <input
-                    type={showPassword ? "text" : "password"}
-                    name="password"
-                    placeholder="Enter your password"
-                    value={formData.password}
-                    onChange={handleChange}
-                    autoComplete="current-password"
-                    required
-                  />
-
-                  <span
-                    className="password-toggle"
-                    onClick={() => setShowPassword(!showPassword)}
-                  >
-                    {showPassword ? <FaEyeSlash /> : <FaEye />}
-                  </span>
-                </div>
-
-                <div className="checkbox-group">
-                  <Link to="/forgot-password">Forgot Password?</Link>
-                </div>
-              </div>
-
-              <button className="btn" disabled={loading}>
-                {loading ? (
-                  <span className="btn-spinner-wrap">
-                    <span className="btn-spinner" />
-                    Logging in...
-                  </span>
-                ) : (
-                  "Login"
-                )}
-              </button>
-            </form>
-
-            <p className="auth-link">
-              Don't have an account? <Link to="/register">Create Account</Link>
-            </p>
+            <Link to="/forgot-password" className="forgot-link">
+              Forgot Password?
+            </Link>
           </div>
-        </div>
+
+          <button className="btn" disabled={loading}>
+            {loading ? (
+              <span className="btn-spinner-wrap">
+                <span className="btn-spinner" />
+                Logging in...
+              </span>
+            ) : (
+              "Login"
+            )}
+          </button>
+        </form>
+
+        <p className="auth-link">
+          Don't have an account? <Link to="/register">Create Account</Link>
+        </p>
+
+        <button
+          type="button"
+          className="replay-intro-btn"
+          onClick={handleReplayIntro}
+        >
+          <FaPlay />
+          <span>Replay Intro</span>
+        </button>
       </div>
     </div>
   );

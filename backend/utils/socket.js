@@ -1,11 +1,11 @@
+import { Server } from 'socket.io';
+import jwt from 'jsonwebtoken';
+import Users from '../models/users.js';
+
 let ioInstance = null;
 
-module.exports = {
+export default {
   init: (server) => {
-    const { Server } = require('socket.io');
-    const jwt = require('jsonwebtoken');
-    const Users = require('../models/users');
-
     ioInstance = new Server(server, {
       cors: { origin: '*' },
     });
@@ -13,7 +13,10 @@ module.exports = {
     // Optional auth: accept token from client and join a room per user id
     ioInstance.use(async (socket, next) => {
       try {
-        const token = socket.handshake.auth && socket.handshake.auth.token ? socket.handshake.auth.token : socket.handshake.query?.token;
+        const token =
+          socket.handshake.auth && socket.handshake.auth.token
+            ? socket.handshake.auth.token
+            : socket.handshake.query?.token;
         if (!token) return next();
 
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
@@ -28,7 +31,7 @@ module.exports = {
       next();
     });
 
-    ioInstance.on('connection', (socket) => {
+    ioInstance.on('connection', () => {
       // connection established
     });
 

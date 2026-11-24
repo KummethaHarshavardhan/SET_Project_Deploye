@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 const expenseSchema = new mongoose.Schema(
   {
@@ -22,6 +22,31 @@ const expenseSchema = new mongoose.Schema(
       required: [true, 'Category is required'],
       trim: true,
       default: 'Other',
+    },
+    paymentMethod: {
+      type: String,
+      trim: true,
+      default: 'Cash',
+    },
+    receiver: {
+      type: String,
+      trim: true,
+      default: '',
+    },
+    source: {
+      type: String,
+      enum: ['manual', 'voice', 'phonepe'],
+      default: 'manual',
+    },
+    transactionId: {
+      type: String,
+      trim: true,
+      default: null,
+    },
+    voiceExtractionId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'VoiceExtraction',
+      default: null,
     },
     date: {
       type: Date,
@@ -52,4 +77,4 @@ const expenseSchema = new mongoose.Schema(
 expenseSchema.index({ user: 1, date: -1 });
 expenseSchema.index({ user: 1, category: 1 });
 
-module.exports = mongoose.model('Expense', expenseSchema);
+export default mongoose.model('Expense', expenseSchema);

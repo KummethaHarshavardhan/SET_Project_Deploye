@@ -25,3 +25,22 @@ export const getAudioStreamUrl = (id) => {
   const token = localStorage.getItem("token");
   return `${baseURL}/recordings/${id}${token ? `?token=${encodeURIComponent(token)}` : ""}`;
 };
+
+export const processVoiceAudio = async (formData) => {
+  const response = await api.post("/voice/process", formData, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
+  return response.data;
+};
+
+export const confirmVoiceTransactions = async (payload) => {
+  const response = await api.post("/voice/confirm", payload);
+  return response.data;
+};
+
+export const cancelVoiceExtraction = async (extractionId) => {
+  const response = await api.post("/voice/cancel", { extractionId });
+  return response.data;
+};

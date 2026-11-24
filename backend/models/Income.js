@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 const incomeSchema = new mongoose.Schema(
   {
@@ -23,6 +23,31 @@ const incomeSchema = new mongoose.Schema(
       required: [true, 'Category is required'],
       trim: true,
       default: 'Salary',
+    },
+    sender: {
+      type: String,
+      trim: true,
+      default: '',
+    },
+    paymentMethod: {
+      type: String,
+      trim: true,
+      default: 'Cash',
+    },
+    source: {
+      type: String,
+      enum: ['manual', 'voice', 'phonepe'],
+      default: 'manual',
+    },
+    transactionId: {
+      type: String,
+      trim: true,
+      default: null,
+    },
+    voiceExtractionId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'VoiceExtraction',
+      default: null,
     },
     date: {
       type: Date,
@@ -51,4 +76,4 @@ const incomeSchema = new mongoose.Schema(
 
 incomeSchema.index({ user: 1, date: -1 });
 
-module.exports = mongoose.model('Income', incomeSchema);
+export default mongoose.model('Income', incomeSchema);

@@ -1,5 +1,5 @@
-const mongoose = require('mongoose');
-const bcrypt = require('bcrypt');
+import mongoose from 'mongoose';
+import bcrypt from 'bcrypt';
 
 const UserSchema = new mongoose.Schema(
   {
@@ -57,4 +57,4 @@ UserSchema.methods.toJSON = function () {
   return obj;
 };
 
-module.exports = mongoose.model('Users', UserSchema);
+export default mongoose.model('Users', UserSchema);

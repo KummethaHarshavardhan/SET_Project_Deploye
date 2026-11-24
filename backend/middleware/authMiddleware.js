@@ -1,7 +1,6 @@
-const jwt = require('jsonwebtoken');
-const asyncHandler = require('../utils/asyncHandler');
-const Users = require('../models/users');
-
+import jwt from 'jsonwebtoken';
+import asyncHandler from '../utils/asyncHandler.js';
+import Users from '../models/users.js';
 
 const protect = asyncHandler(async (req, res, next) => {
   let token;
@@ -30,7 +29,6 @@ const protect = asyncHandler(async (req, res, next) => {
   }
 });
 
-
 const adminOnly = (req, res, next) => {
   if (req.user && req.user.role === 'admin') {
     return next();
@@ -38,4 +36,4 @@ const adminOnly = (req, res, next) => {
   return res.status(403).json({ message: 'Admin access required' });
 };
 
-module.exports = { protect, adminOnly };
+export { protect, adminOnly };

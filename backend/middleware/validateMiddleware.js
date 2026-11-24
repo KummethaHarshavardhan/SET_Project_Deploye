@@ -52,4 +52,4 @@ const validateBudget = (req, res, next) => {
   next();
 };
 
-module.exports = { validateRegister, validateLogin, validateExpense, validateBudget };
+export { validateRegister, validateLogin, validateExpense, validateBudget };

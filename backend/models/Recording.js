@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 const recordingSchema = new mongoose.Schema(
   {
@@ -26,6 +26,15 @@ const recordingSchema = new mongoose.Schema(
       type: Number,
       default: 0,
     },
+    transcript: {
+      type: String,
+      trim: true,
+      default: '',
+    },
+    aiProcessed: {
+      type: Boolean,
+      default: false,
+    },
     created_at: {
       type: Date,
       default: Date.now,
@@ -46,4 +55,4 @@ const recordingSchema = new mongoose.Schema(
 
 recordingSchema.index({ user: 1, created_at: -1 });
 
-module.exports = mongoose.model('Recording', recordingSchema);
+export default mongoose.model('Recording', recordingSchema);

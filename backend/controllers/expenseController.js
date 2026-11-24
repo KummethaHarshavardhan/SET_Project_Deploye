@@ -1,11 +1,11 @@
-const asyncHandler = require('../utils/asyncHandler');
-const Expense = require('../models/Expense');
-const Income = require('../models/Income');
-const socketUtil = require('../utils/socket');
+import asyncHandler from '../utils/asyncHandler.js';
+import Expense from '../models/Expense.js';
+import Income from '../models/Income.js';
+import socketUtil from '../utils/socket.js';
 
 // @route POST /api/expenses
 const createExpense = asyncHandler(async (req, res) => {
-  const { title, amount, category, paymentMethod, date, description } = req.body;
+  const { title, amount, category, paymentMethod, receiver, source, date, description } = req.body;
 
   const expense = await Expense.create({
     user: req.user._id,
@@ -13,6 +13,8 @@ const createExpense = asyncHandler(async (req, res) => {
     amount,
     category,
     paymentMethod,
+    receiver,
+    source: source || 'manual',
     date,
     description,
   });
@@ -233,7 +235,7 @@ const getDashboardSummary = asyncHandler(async (req, res) => {
   });
 });
 
-module.exports = {
+export {
   createExpense,
   getExpenses,
   getExpenseById,

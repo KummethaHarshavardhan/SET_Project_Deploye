@@ -20,13 +20,25 @@ function Dashboard() {
   useEffect(() => {
     let mounted = true;
 
-    getDashboardSummary()
-      .then((data) => {
-        if (mounted) setSummary(data);
-      })
-      .catch((err) => console.error("Failed to load dashboard summary:", err));
+    const loadSummary = () => {
+      getDashboardSummary()
+        .then((data) => {
+          if (mounted) setSummary(data);
+        })
+        .catch((err) => console.error("Failed to load dashboard summary:", err));
+    };
 
-    return () => (mounted = false);
+    loadSummary();
+
+    const handleTransactionsUpdated = () => {
+      loadSummary();
+    };
+    window.addEventListener("transactions-updated", handleTransactionsUpdated);
+
+    return () => {
+      mounted = false;
+      window.removeEventListener("transactions-updated", handleTransactionsUpdated);
+    };
   }, []);
 
   return (

@@ -1,14 +1,14 @@
-const express = require('express');
-const router = express.Router();
-
-const {
+import express from 'express';
+import {
   createIncome,
   getIncomes,
   getIncomeById,
   updateIncome,
   deleteIncome,
-} = require('../controllers/incomeController');
-const { protect } = require('../middleware/authMiddleware');
+} from '../controllers/incomeController.js';
+import { protect } from '../middleware/authMiddleware.js';
+
+const router = express.Router();
 
 router.use(protect);
 
@@ -21,4 +21,4 @@ router.route('/:id')
   .put(updateIncome)
   .delete(deleteIncome);
 
-module.exports = router;
+export default router;

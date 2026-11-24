@@ -1,14 +1,18 @@
-const express = require('express');
-const multer = require('multer');
-const path = require('path');
-const fs = require('fs');
-const {
+import express from 'express';
+import multer from 'multer';
+import path from 'path';
+import fs from 'fs';
+import { fileURLToPath } from 'url';
+import {
   createRecording,
   getRecordings,
   getRecordingById,
   deleteRecording,
-} = require('../controllers/recordingController');
-const { protect } = require('../middleware/authMiddleware');
+} from '../controllers/recordingController.js';
+import { protect } from '../middleware/authMiddleware.js';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const router = express.Router();
 
@@ -78,4 +82,4 @@ router.route('/:id')
   .get(getRecordingById)
   .delete(deleteRecording);
 
-module.exports = router;
+export default router;

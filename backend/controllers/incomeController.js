@@ -1,16 +1,19 @@
-const asyncHandler = require('../utils/asyncHandler');
-const Income = require('../models/Income');
-const socketUtil = require('../utils/socket');
+import asyncHandler from '../utils/asyncHandler.js';
+import Income from '../models/Income.js';
+import socketUtil from '../utils/socket.js';
 
 // @route POST /api/income
 const createIncome = asyncHandler(async (req, res) => {
-  const { title, amount, category, date, description } = req.body;
+  const { title, amount, category, sender, paymentMethod, source, date, description } = req.body;
 
   const income = await Income.create({
     user: req.user._id,
     title,
     amount,
     category,
+    sender,
+    paymentMethod,
+    source: source || 'manual',
     date,
     description,
   });
@@ -69,10 +72,12 @@ const updateIncome = asyncHandler(async (req, res) => {
     return res.status(404).json({ message: 'Income not found' });
   }
 
-  const { title, amount, category, date, description } = req.body;
+  const { title, amount, category, sender, paymentMethod, date, description } = req.body;
   if (title !== undefined) income.title = title;
   if (amount !== undefined) income.amount = amount;
   if (category !== undefined) income.category = category;
+  if (sender !== undefined) income.sender = sender;
+  if (paymentMethod !== undefined) income.paymentMethod = paymentMethod;
   if (date !== undefined) income.date = date;
   if (description !== undefined) income.description = description;
 
@@ -97,4 +102,4 @@ const deleteIncome = asyncHandler(async (req, res) => {
   res.status(200).json({ message: 'Income deleted successfully' });
 });
 
-module.exports = { createIncome, getIncomes, getIncomeById, updateIncome, deleteIncome };
+export { createIncome, getIncomes, getIncomeById, updateIncome, deleteIncome };

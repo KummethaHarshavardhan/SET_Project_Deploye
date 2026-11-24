@@ -1,7 +1,5 @@
-const express = require('express');
-const router = express.Router();
-
-const {
+import express from 'express';
+import {
   createExpense,
   getExpenses,
   getExpenseById,
@@ -11,9 +9,11 @@ const {
   getMonthlyReport,
   exportExpensesCsv,
   getDashboardSummary,
-} = require('../controllers/expenseController');
-const { protect } = require('../middleware/authMiddleware');
-const { validateExpense } = require('../middleware/validateMiddleware');
+} from '../controllers/expenseController.js';
+import { protect } from '../middleware/authMiddleware.js';
+import { validateExpense } from '../middleware/validateMiddleware.js';
+
+const router = express.Router();
 
 router.use(protect);
 
@@ -31,4 +31,4 @@ router.route('/:id')
   .put(updateExpense)
   .delete(deleteExpense);
 
-module.exports = router;
+export default router;
