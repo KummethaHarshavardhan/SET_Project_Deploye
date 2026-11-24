@@ -150,7 +150,10 @@ router.post(
         return res.status(404).json({ message: 'Voice extraction record not found.' });
       }
       if (extraction.status === 'confirmed') {
-        return res.status(400).json({ message: 'These voice transactions have already been saved.' });
+        return res.status(409).json({
+          message: 'These transactions have already been saved.',
+          alreadySaved: true,
+        });
       }
     }
 

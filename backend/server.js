@@ -18,6 +18,7 @@ import expenseRoutes from './routes/expenseRoutes.js';
 import incomeRoutes from './routes/incomeRoutes.js';
 import recordingRoutes from './routes/recordingRoutes.js';
 import voiceRoutes from './AI/routes/voiceRoutes.js';
+import aiRoutes from './AI/routes/aiRoutes.js';
 import { notFound, errorHandler } from './middleware/errorMiddleware.js';
 import socketUtil from './utils/socket.js';
 
@@ -35,6 +36,7 @@ app.use('/api/expenses', expenseRoutes);
 app.use('/api/income', incomeRoutes);
 app.use('/api/recordings', recordingRoutes);
 app.use('/api/voice', voiceRoutes);
+app.use('/api/ai', aiRoutes);
 
 app.use(notFound);
 app.use(errorHandler);

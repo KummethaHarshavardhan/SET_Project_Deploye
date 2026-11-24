@@ -1,6 +1,6 @@
 import fs from 'fs';
 import { Type } from '@google/genai';
-import { getGeminiClient, getGeminiModel } from '../config/gemini.js';
+import { generateContentWithRetry, getGeminiModel } from '../config/gemini.js';
 
 /**
  * Transcribes an audio file on disk using Google Gemini multimodal audio understanding.
@@ -9,7 +9,6 @@ import { getGeminiClient, getGeminiModel } from '../config/gemini.js';
  * @returns {Promise<string>} Clean verbatim transcript
  */
 const transcribeAudioFile = async (filePath, mimeType = 'audio/webm') => {
-  const ai = getGeminiClient();
   const model = getGeminiModel();
 
   const audioBuffer = await fs.promises.readFile(filePath);
@@ -18,7 +17,7 @@ const transcribeAudioFile = async (filePath, mimeType = 'audio/webm') => {
   // Normalize browser-specific codec suffixes like "audio/webm;codecs=opus" -> "audio/webm"
   const cleanMimeType = (mimeType || 'audio/webm').split(';')[0].trim();
 
-  const response = await ai.models.generateContent({
+  const response = await generateContentWithRetry({
     model,
     contents: [
       {

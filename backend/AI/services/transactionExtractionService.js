@@ -1,6 +1,6 @@
 import fs from 'fs';
 import { Type } from '@google/genai';
-import { getGeminiClient, getGeminiModel } from '../config/gemini.js';
+import { generateContentWithRetry, getGeminiModel } from '../config/gemini.js';
 import { buildTransactionExtractionPrompt } from '../prompts/transactionPrompt.js';
 
 const TRANSACTION_RESPONSE_SCHEMA = {
@@ -112,7 +112,6 @@ const extractTransactionsFromVoice = async ({
   mimeType = 'audio/webm',
   transcript = '',
 }) => {
-  const ai = getGeminiClient();
   const model = getGeminiModel();
   const todayIso = new Date().toISOString().split('T')[0];
   const prompt = buildTransactionExtractionPrompt(todayIso);
@@ -137,7 +136,7 @@ const extractTransactionsFromVoice = async ({
     throw err;
   }
 
-  const response = await ai.models.generateContent({
+  const response = await generateContentWithRetry({
     model,
     contents,
     config: {
