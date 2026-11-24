@@ -7,7 +7,6 @@ import {
   FaChartPie,
   FaChartLine,
   FaUserCircle,
-  FaMicrophone,
   FaTimes,
 } from "react-icons/fa";
 import { useSidebar } from "../context/SidebarContext";
@@ -116,17 +115,6 @@ function Sidebar() {
             >
               <FaChartLine />
               <span>Analytics</span>
-            </NavLink>
-          </li>
-
-          <li>
-            <NavLink
-              to="/recordings"
-              onClick={handleLinkClick}
-              className={({ isActive }) => (isActive ? "active" : "")}
-            >
-              <FaMicrophone />
-              <span>Recordings</span>
             </NavLink>
           </li>
 

@@ -23,7 +23,6 @@ function Navbar() {
     { to: "/expenses", label: "Expenses" },
     { to: "/reports", label: "Reports" },
     { to: "/analytics", label: "Analytics" },
-    { to: "/recordings", label: "Recordings" },
     { to: "/profile", label: "Profile" },
   ];
 

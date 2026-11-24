@@ -54,8 +54,21 @@ function PieChart({ data = [] }) {
             ))}
           </Pie>
 
-          <Tooltip formatter={(value) => `₹${Number(value).toLocaleString()}`} />
-          <Legend verticalAlign="bottom" height={36} />
+          <Tooltip
+            formatter={(value) => `₹${Number(value).toLocaleString()}`}
+            contentStyle={{
+              backgroundColor: "#ffffff",
+              color: "#111827",
+              border: "1px solid #e2e8f0",
+              borderRadius: "8px",
+            }}
+            itemStyle={{ color: "#111827" }}
+          />
+          <Legend
+            verticalAlign="bottom"
+            height={36}
+            wrapperStyle={{ color: "#1f2937" }}
+          />
         </RePieChart>
       </ResponsiveContainer>
     </div>

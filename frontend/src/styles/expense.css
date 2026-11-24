@@ -162,6 +162,13 @@
 
 .expense-table tbody tr:hover {
   background: #f8fbff;
+  color: #111827;
+}
+
+.expense-table tbody tr:hover td,
+.expense-table tbody tr:hover .amount,
+.expense-table tbody tr:hover .description {
+  color: #111827;
 }
 
 .amount {

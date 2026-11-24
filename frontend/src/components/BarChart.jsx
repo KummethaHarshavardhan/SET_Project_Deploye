@@ -20,9 +20,19 @@ function BarChart({ data = [] }) {
       <ResponsiveContainer width="100%" height="100%">
         <ReBarChart data={formattedData}>
           <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="month" />
-          <YAxis />
-          <Tooltip formatter={(value) => `₹${Number(value).toLocaleString()}`} />
+          <XAxis dataKey="month" tick={{ fill: "#374151", fontSize: 12 }} />
+          <YAxis tick={{ fill: "#374151", fontSize: 12 }} />
+          <Tooltip
+            formatter={(value) => `₹${Number(value).toLocaleString()}`}
+            contentStyle={{
+              backgroundColor: "#ffffff",
+              color: "#111827",
+              border: "1px solid #e2e8f0",
+              borderRadius: "8px",
+            }}
+            itemStyle={{ color: "#111827" }}
+            labelStyle={{ color: "#111827", fontWeight: 600 }}
+          />
           <Bar dataKey="amount" fill="#2563eb" radius={[8, 8, 0, 0]} />
         </ReBarChart>
       </ResponsiveContainer>
